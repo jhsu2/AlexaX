@@ -5,7 +5,7 @@ from flask import Flask
 from flask_ask import Ask, request, session, question, statement
 
 import globalFile
-import deez
+import detection
 
 globalFile.init()
 
@@ -57,4 +57,4 @@ if __name__ == '__main__':
             app.config['ASK_VERIFY_REQUESTS'] = False
 
     app.run(debug=True)
-    deez.main()
+    detection.main()

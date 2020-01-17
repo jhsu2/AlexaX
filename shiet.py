@@ -4,7 +4,10 @@ import os
 from flask import Flask
 from flask_ask import Ask, request, session, question, statement
 
-# import RPi.GPIO as GPIO
+import globalFile
+import deez
+
+globalFile.init()
 
 app = Flask(__name__)
 ask = Ask(app, "/")
@@ -12,8 +15,6 @@ logging.getLogger('flask_ask').setLevel(logging.DEBUG)
 
 STATUSON = ['on', 'high', 'start']
 STATUSOFF = ['off', 'low', 'stop']
-
-global taygaloo_cat_en
 
 
 @ask.launch
@@ -26,11 +27,11 @@ def launch():
 def Gpio_Intent(status, music, room):
     if status in STATUSON:
         print("nibba")
-        taygaloo_cat_en = True
+        globalFile.taygaloo_cat_en = True
         return statement('turning {} tracking'.format(status))
     elif status in STATUSOFF:
         print("nibber")
-        taygaloo_cat_en = False
+        globalFile.taygaloo_cat_en = False
         return statement('turning {} tracking'.format(status))
     elif music != '' and status == '':
         return statement('playing {}'.format(music))
@@ -54,5 +55,6 @@ if __name__ == '__main__':
         verify = str(os.environ.get('ASK_VERIFY_REQUESTS', '')).lower()
         if verify == 'false':
             app.config['ASK_VERIFY_REQUESTS'] = False
-    taygaloo_cat_en = False
+
     app.run(debug=True)
+    deez.main()
